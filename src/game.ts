@@ -353,7 +353,7 @@ class Game2048 {
             const isVertical = direction === 'up' || direction === 'down';
             // Determine if the move is in reverse order (down or right)
             const isReverse = direction === 'down' || direction === 'right';
-
+   
             // Iterate over each row or column based on the direction
             for (let i = 0; i < 4; i++) {
                 // Track which tiles have been merged to prevent double merging
@@ -376,20 +376,20 @@ class Game2048 {
                                 break;
                             }
                             // Move the tile to the next position
-                            this.board[nextRow][nextCol] = { ...this.board[newRow][newCol] };
-                            this.board[newRow][newCol] = { value: 0, isNew: false, element: this.board[newRow][newCol].element }; // Clear the value but retain the element
+                            this.board[nextRow][nextCol].value = this.board[newRow][newCol].value;
+                            this.board[newRow][newCol].value = 0; // Clear the value
                             newRow = nextRow;
                             newCol = nextCol;
                         }
                         // Check if the tile can be merged with the next tile
                         const mergeRow = newRow + (isVertical ? (isReverse ? 1 : -1) : 0);
                         const mergeCol = newCol + (isVertical ? 0 : (isReverse ? 1 : -1));
-                        if (mergeRow >= 0 && mergeRow < 4 && mergeCol >= 0 && mergeCol < 4 && 
+                        if (mergeRow >= 0 && mergeRow < 4 && mergeCol >= 0 && mergeCol < 4 &&
                             this.board[mergeRow][mergeCol].value === this.board[newRow][newCol].value && !merged[mergeRow || mergeCol]) {
                             // Merge the tiles and update the score
                             this.board[mergeRow][mergeCol].value *= 2;
                             this.board[mergeRow][mergeCol].isNew = true;
-                            this.board[newRow][newCol] = { value: 0, isNew: false, element: this.board[newRow][newCol].element }; // Clear the value but retain the element
+                            this.board[newRow][newCol].value = 0; // Clear the value
                             merged[mergeRow || mergeCol] = true;
                             this.updateScore(this.board[mergeRow][mergeCol].value);
                             this.displayRandomPrompt(); // Display a new prompt on merge
