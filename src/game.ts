@@ -1,4 +1,4 @@
-type Tile = {
+export type Tile = {
     value: number;
     isNew: boolean;
 };
