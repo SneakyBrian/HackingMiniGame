@@ -375,9 +375,9 @@ class Game2048 {
                             if (nextRow < 0 || nextRow > 3 || nextCol < 0 || nextCol > 3 || this.board[nextRow][nextCol].value !== 0) {
                                 break;
                             }
-                            // Move the tile to the next position
-                            this.board[nextRow][nextCol].value = this.board[newRow][newCol].value;
-                            this.board[newRow][newCol].value = 0; // Clear the value
+                            // Swap the tiles
+                            [this.board[newRow][newCol], this.board[nextRow][nextCol]] = [this.board[nextRow][nextCol], this.board[newRow][newCol]];
+
                             newRow = nextRow;
                             newCol = nextCol;
                         }
