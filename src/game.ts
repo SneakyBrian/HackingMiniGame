@@ -490,14 +490,26 @@ class Game2048 {
      * Renders the game board on the UI.
      */
     private render(): void {
+        const tileSize = 105; // Size of each tile including gap
         for (let i = 0; i < 4; i++) {
             for (let j = 0; j < 4; j++) {
                 const tile = this.board[i][j];
                 if (tile.element) {
+                    // Update the tile's text content
                     tile.element.textContent = tile.value === 0 ? '' : `0x${tile.value.toString(16).toUpperCase()}`;
-                    tile.element.style.transform = `translate(${j * 105}px, ${i * 105}px)`;
+
+                    // Calculate the correct position for the tile
+                    const x = j * tileSize;
+                    const y = i * tileSize;
+
+                    // Apply the transformation to position the tile
+                    tile.element.style.transform = `translate(${x}px, ${y}px)`;
+
+                    // Update the tile's class for animation
                     tile.element.className = tile.isNew ? 'tile pulse' : 'tile';
-                    tile.isNew = false; // Reset the isNew flag after rendering
+
+                    // Reset the isNew flag after rendering
+                    tile.isNew = false;
                 }
             }
         }
