@@ -846,7 +846,6 @@ class Game2048 {
         this.targetScore = parseInt(urlParams.get('target') || '2048', 10);
         this.active = true;
         this.board = this.createBoard();
-        this.newTiles = this.createNewTilesMap();
         this.score = 0;
         this.prompts = [];
         this.updateScore(0);
@@ -883,13 +882,13 @@ class Game2048 {
         let potentialMerges = 0;
         for (let i = 0; i < 4; i++) {
             for (let j = 0; j < 4; j++) {
-                if (this.board[i][j] !== 0) {
+                if (this.board[i][j].value !== 0) {
                     filledSquares++;
                 }
-                if (i < 3 && this.board[i][j] === this.board[i + 1][j]) {
+                if (i < 3 && this.board[i][j].value === this.board[i + 1][j].value) {
                     potentialMerges++;
                 }
-                if (j < 3 && this.board[i][j] === this.board[i][j + 1]) {
+                if (j < 3 && this.board[i][j].value === this.board[i][j + 1].value) {
                     potentialMerges++;
                 }
             }
@@ -937,7 +936,7 @@ class Game2048 {
      * @returns {number[][]} The current game board.
      */
     getBoard() {
-        return this.board;
+        return this.board.map(row => row.map(tile => tile.value));
     }
     /**
      * Updates the target score display on the UI.
@@ -1086,29 +1085,29 @@ class Game2048 {
                 for (let j = isReverse ? 2 : 1; isReverse ? j >= 0 : j < 4; isReverse ? j-- : j++) {
                     const row = isVertical ? j : i;
                     const col = isVertical ? i : j;
-                    if (this.board[row][col] !== 0) {
+                    if (this.board[row][col].value !== 0) {
                         let newRow = row;
                         let newCol = col;
                         while (true) {
                             const nextRow = newRow + (isVertical ? (isReverse ? 1 : -1) : 0);
                             const nextCol = newCol + (isVertical ? 0 : (isReverse ? 1 : -1));
-                            if (nextRow < 0 || nextRow > 3 || nextCol < 0 || nextCol > 3 || this.board[nextRow][nextCol] !== 0) {
+                            if (nextRow < 0 || nextRow > 3 || nextCol < 0 || nextCol > 3 || this.board[nextRow][nextCol].value !== 0) {
                                 break;
                             }
-                            this.board[nextRow][nextCol] = this.board[newRow][newCol];
-                            this.board[newRow][newCol] = 0;
+                            this.board[nextRow][nextCol] = Object.assign({}, this.board[newRow][newCol]);
+                            this.board[newRow][newCol] = { value: 0, isNew: false };
                             newRow = nextRow;
                             newCol = nextCol;
                         }
                         const mergeRow = newRow + (isVertical ? (isReverse ? 1 : -1) : 0);
                         const mergeCol = newCol + (isVertical ? 0 : (isReverse ? 1 : -1));
                         if (mergeRow >= 0 && mergeRow < 4 && mergeCol >= 0 && mergeCol < 4 &&
-                            this.board[mergeRow][mergeCol] === this.board[newRow][newCol] && !merged[mergeRow || mergeCol]) {
-                            this.board[mergeRow][mergeCol] *= 2;
-                            this.newTiles[mergeRow][mergeCol] = true;
-                            this.board[newRow][newCol] = 0;
+                            this.board[mergeRow][mergeCol].value === this.board[newRow][newCol].value && !merged[mergeRow || mergeCol]) {
+                            this.board[mergeRow][mergeCol].value *= 2;
+                            this.board[mergeRow][mergeCol].isNew = true;
+                            this.board[newRow][newCol] = { value: 0, isNew: false };
                             merged[mergeRow || mergeCol] = true;
-                            this.updateScore(this.board[mergeRow][mergeCol]);
+                            this.updateScore(this.board[mergeRow][mergeCol].value);
                             this.displayRandomPrompt(); // Display a new prompt on merge
                         }
                         this.checkEndGameCondition();
@@ -1137,7 +1136,7 @@ class Game2048 {
         // Check for empty spaces
         for (let i = 0; i < 4; i++) {
             for (let j = 0; j < 4; j++) {
-                if (this.board[i][j] === 0) {
+                if (this.board[i][j].value === 0) {
                     return false; // Found an empty space
                 }
             }
@@ -1175,14 +1174,7 @@ class Game2048 {
      * @returns {number[][]} A 2D array representing the game board.
      */
     createBoard() {
-        return Array.from({ length: 4 }, () => Array(4).fill(0));
-    }
-    /**
-     * Creates the new tiles map.
-     * @returns {boolean[][]} A 2D array of flags indicating whether the tile is new.
-     */
-    createNewTilesMap() {
-        return Array.from({ length: 4 }, () => Array(4).fill(false));
+        return Array.from({ length: 4 }, () => Array.from({ length: 4 }, () => ({ value: 0, isNew: false })));
     }
     /**
      * Adds a random tile (2 or 4) to an empty spot on the board.
@@ -1191,15 +1183,15 @@ class Game2048 {
         const emptyTiles = [];
         for (let i = 0; i < 4; i++) {
             for (let j = 0; j < 4; j++) {
-                if (this.board[i][j] === 0) {
+                if (this.board[i][j].value === 0) {
                     emptyTiles.push({ x: i, y: j });
                 }
             }
         }
         if (emptyTiles.length > 0) {
             const { x, y } = emptyTiles[Math.floor(Math.random() * emptyTiles.length)];
-            this.board[x][y] = Math.random() < 0.9 ? 2 : 4;
-            this.newTiles[x][y] = true;
+            this.board[x][y].value = Math.random() < 0.9 ? 2 : 4;
+            this.board[x][y].isNew = true;
         }
     }
     /**
@@ -1212,14 +1204,14 @@ class Game2048 {
             for (let i = 0; i < 4; i++) {
                 for (let j = 0; j < 4; j++) {
                     const tile = document.createElement('div');
-                    if (this.newTiles[i][j]) {
+                    if (this.board[i][j].isNew) {
                         tile.className = 'tile pulse';
-                        this.newTiles[i][j] = false;
+                        this.board[i][j].isNew = false;
                     }
                     else {
                         tile.className = 'tile';
                     }
-                    tile.textContent = this.board[i][j] === 0 ? '' : `0x${this.board[i][j].toString(16).toUpperCase()}`;
+                    tile.textContent = this.board[i][j].value === 0 ? '' : `0x${this.board[i][j].value.toString(16).toUpperCase()}`;
                     tile.style.transform = `translate(${j * 105}px, ${i * 105}px)`; // Position tile
                     gameBoard.appendChild(tile);
                 }
