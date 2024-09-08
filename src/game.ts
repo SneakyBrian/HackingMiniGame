@@ -367,7 +367,7 @@ class Game2048 {
                                 break;
                             }
                             this.board[nextRow][nextCol] = { ...this.board[newRow][newCol] };
-                            this.board[newRow][newCol] = { value: 0, isNew: false };
+                            this.board[newRow][newCol] = { value: 0, isNew: false, element: null };
                             newRow = nextRow;
                             newCol = nextCol;
                         }
@@ -377,7 +377,7 @@ class Game2048 {
                             this.board[mergeRow][mergeCol].value === this.board[newRow][newCol].value && !merged[mergeRow || mergeCol]) {
                             this.board[mergeRow][mergeCol].value *= 2;
                             this.board[mergeRow][mergeCol].isNew = true;
-                            this.board[newRow][newCol] = { value: 0, isNew: false };
+                            this.board[newRow][newCol] = { value: 0, isNew: false, element: null };
                             merged[mergeRow || mergeCol] = true;
                             this.updateScore(this.board[mergeRow][mergeCol].value);
                             this.displayRandomPrompt(); // Display a new prompt on merge
