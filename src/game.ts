@@ -128,7 +128,7 @@ class Game2048 {
 
         for (let i = 0; i < 4; i++) {
             for (let j = 0; j < 4; j++) {
-                if (this.board[i][j] !== 0) {
+                if (this.board[i][j].value !== 0) {
                     filledSquares++;
                 }
                 if (i < 3 && this.board[i][j].value === this.board[i + 1][j].value) {
@@ -188,7 +188,7 @@ class Game2048 {
      * Gets the current game board.
      * @returns {number[][]} The current game board.
      */
-    public getBoard(): number[][] {
+    public getBoard(): Tile[][] {
         return this.board;
     }
 
