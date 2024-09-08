@@ -1,5 +1,13 @@
 import Game2048 from "../src/game"
 
+function createTileBoard(board: number[][]): Tile[][] {
+    return board.map(row => row.map(value => ({ value, isNew: false })));
+}
+
+function createNumberBoard(board: Tile[][]): number[][] {
+    return board.map(row => row.map(tile => tile.value));
+}
+
 describe('Game2048', () => {
     let game: Game2048;
 
@@ -13,92 +21,92 @@ describe('Game2048', () => {
 
     test('should add a random tile on initialization', () => {
         const board = game.getBoard();
-        const nonZeroTiles = board.flat().filter((tile: number) => tile !== 0);
+        const nonZeroTiles = board.flat().filter((tile: Tile) => tile.value !== 0);
         expect(nonZeroTiles.length).toBe(2);
     });
 
     test('should move tiles up correctly', () => {
-        game['board'] = [
+        game['board'] = createTileBoard([
             [2, 0, 0, 2],
             [2, 0, 0, 2],
             [0, 0, 0, 0],
             [0, 0, 0, 0],
-        ];
+        ]);
         game['move']('up');
-        expect(game.getBoard()).toEqual([
+        expect(game.getBoard()).toEqual(createNumberBoard([
             [4, 0, 0, 4],
             [0, 0, 0, 0],
             [0, 0, 0, 0],
             [0, 0, 0, 0],
-        ]);
+        ]));
     });
 
     test('should move tiles down correctly', () => {
-        game['board'] = [
+        game['board'] = createTileBoard([
             [2, 0, 0, 2],
             [2, 0, 0, 2],
             [0, 0, 0, 0],
             [0, 0, 0, 0],
-        ];
+        ]);
         game['move']('down');
-        expect(game.getBoard()).toEqual([
+        expect(game.getBoard()).toEqual(createNumberBoard([
             [0, 0, 0, 0],
             [0, 0, 0, 0],
             [0, 0, 0, 0],
             [4, 0, 0, 4],
-        ]);
+        ]));
     });
 
     test('should move tiles left correctly', () => {
-        game['board'] = [
+        game['board'] = createTileBoard([
             [2, 2, 0, 0],
             [0, 0, 0, 0],
             [0, 0, 0, 0],
             [2, 2, 0, 0],
-        ];
-        game['move']('left');
-        expect(game.getBoard()).toEqual([
-            [4, 0, 0, 0],
-            [0, 0, 0, 0],
-            [0, 0, 0, 0],
-            [4, 0, 0, 0],
         ]);
+        game['move']('left');
+        expect(game.getBoard()).toEqual(createNumberBoard([
+            [4, 0, 0, 0],
+            [0, 0, 0, 0],
+            [0, 0, 0, 0],
+            [4, 0, 0, 0],
+        ]));
     });
 
     test('should move tiles right correctly', () => {
-        game['board'] = [
+        game['board'] = createTileBoard([
             [0, 0, 2, 2],
             [0, 0, 0, 0],
             [0, 0, 0, 0],
             [0, 0, 2, 2],
-        ];
-        game['move']('right');
-        expect(game.getBoard()).toEqual([
-            [0, 0, 0, 4],
-            [0, 0, 0, 0],
-            [0, 0, 0, 0],
-            [0, 0, 0, 4],
         ]);
+        game['move']('right');
+        expect(game.getBoard()).toEqual(createNumberBoard([
+            [0, 0, 0, 4],
+            [0, 0, 0, 0],
+            [0, 0, 0, 0],
+            [0, 0, 0, 4],
+        ]));
     });
 
     test('should update score correctly when tiles are combined', () => {
-        game['board'] = [
+        game['board'] = createTileBoard([
             [2, 2, 0, 0],
             [0, 0, 0, 0],
             [0, 0, 0, 0],
             [0, 0, 0, 0],
-        ];
+        ]);
         game['move']('left');
         expect(game.getScore()).toBe(4);
     });
 
     test('should end game with win message when target score is reached', () => {
-        game['board'] = [
+        game['board'] = createTileBoard([
             [1024, 1024, 0, 0],
             [0, 0, 0, 0],
             [0, 0, 0, 0],
             [0, 0, 0, 0],
-        ];
+        ]);
         game['move']('left');
         expect(game.getScore()).toBe(2048);
         // Assuming there's a method to check if the game is active
@@ -106,12 +114,12 @@ describe('Game2048', () => {
     });
 
     test('should end game with deadlock message when no moves are possible', () => {
-        game['board'] = [
+        game['board'] = createTileBoard([
             [2, 4, 2, 4],
             [4, 2, 4, 2],
             [2, 4, 2, 4],
             [4, 2, 4, 2],
-        ];
+        ]);
         game['checkEndGameCondition']();
         expect(game['active']).toBe(false);
     });
