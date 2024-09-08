@@ -1,4 +1,18 @@
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { execSync } = require('child_process');
+
+function getGitHash() {
+    try {
+        return execSync('git rev-parse --short HEAD').toString().trim();
+    } catch (error) {
+        console.error('Error fetching git hash:', error);
+        return 'unknown';
+    }
+}
+
+const isDevelopment = process.env.NODE_ENV !== 'production';
+const version = `${getGitHash()}${isDevelopment ? '-dev' : ''}`;
 
 module.exports = {
     mode: 'development',
@@ -32,4 +46,11 @@ module.exports = {
         compress: true,
         port: 9000,
     },
+    ],
+    plugins: [
+        new HtmlWebpackPlugin({
+            template: './src/index.html',
+            title: `Hacking Mini Game - ${version}`,
+        }),
+    ],
 };
