@@ -21,7 +21,7 @@ describe('Game2048', () => {
 
     test('should add a random tile on initialization', () => {
         const board = game.getBoard();
-        const nonZeroTiles = board.flat().filter((tile: Tile) => tile.value !== 0);
+        const nonZeroTiles = board.flat().filter((value: number) => value !== 0);
         expect(nonZeroTiles.length).toBe(2);
     });
 
@@ -33,7 +33,7 @@ describe('Game2048', () => {
             [0, 0, 0, 0],
         ]);
         game['move']('up');
-        expect(game.getBoard()).toEqual(createNumberBoard([
+        expect(game.getBoard()).toEqual([
             [4, 0, 0, 4],
             [0, 0, 0, 0],
             [0, 0, 0, 0],
@@ -49,7 +49,7 @@ describe('Game2048', () => {
             [0, 0, 0, 0],
         ]);
         game['move']('down');
-        expect(game.getBoard()).toEqual(createNumberBoard([
+        expect(game.getBoard()).toEqual([
             [0, 0, 0, 0],
             [0, 0, 0, 0],
             [0, 0, 0, 0],
@@ -65,7 +65,7 @@ describe('Game2048', () => {
             [2, 2, 0, 0],
         ]);
         game['move']('left');
-        expect(game.getBoard()).toEqual(createNumberBoard([
+        expect(game.getBoard()).toEqual([
             [4, 0, 0, 0],
             [0, 0, 0, 0],
             [0, 0, 0, 0],
@@ -81,7 +81,7 @@ describe('Game2048', () => {
             [0, 0, 2, 2],
         ]);
         game['move']('right');
-        expect(game.getBoard()).toEqual(createNumberBoard([
+        expect(game.getBoard()).toEqual([
             [0, 0, 0, 4],
             [0, 0, 0, 0],
             [0, 0, 0, 0],
