@@ -1,3 +1,4 @@
+import './game.css';
 
 const potentialPrompts: string[] = [
     "firewall node breached",
