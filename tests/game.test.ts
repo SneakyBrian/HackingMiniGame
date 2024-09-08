@@ -54,7 +54,7 @@ describe('Game2048', () => {
             [0, 0, 0, 0],
             [0, 0, 0, 0],
             [4, 0, 0, 4],
-        ]));
+        ]);
     });
 
     test('should move tiles left correctly', () => {
@@ -70,7 +70,7 @@ describe('Game2048', () => {
             [0, 0, 0, 0],
             [0, 0, 0, 0],
             [4, 0, 0, 0],
-        ]));
+        ]);
     });
 
     test('should move tiles right correctly', () => {
@@ -86,7 +86,7 @@ describe('Game2048', () => {
             [0, 0, 0, 0],
             [0, 0, 0, 0],
             [0, 0, 0, 4],
-        ]));
+        ]);
     });
 
     test('should update score correctly when tiles are combined', () => {
