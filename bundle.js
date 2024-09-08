@@ -1078,38 +1078,50 @@ class Game2048 {
      */
     move(direction) {
         if (this.active) {
+            // Determine if the move is vertical or horizontal
             const isVertical = direction === 'up' || direction === 'down';
+            // Determine if the move is in reverse order (down or right)
             const isReverse = direction === 'down' || direction === 'right';
+            // Iterate over each row or column based on the direction
             for (let i = 0; i < 4; i++) {
+                // Track which tiles have been merged to prevent double merging
                 let merged = [false, false, false, false];
+                // Set the starting point and direction of iteration
                 for (let j = isReverse ? 2 : 1; isReverse ? j >= 0 : j < 4; isReverse ? j-- : j++) {
+                    // Determine the current row and column based on the direction
                     const row = isVertical ? j : i;
                     const col = isVertical ? i : j;
+                    // Check if the current tile is not empty
                     if (this.board[row][col].value !== 0) {
                         let newRow = row;
                         let newCol = col;
+                        // Move the tile as far as possible in the specified direction
                         while (true) {
                             const nextRow = newRow + (isVertical ? (isReverse ? 1 : -1) : 0);
                             const nextCol = newCol + (isVertical ? 0 : (isReverse ? 1 : -1));
+                            // Stop if the next position is out of bounds or not empty
                             if (nextRow < 0 || nextRow > 3 || nextCol < 0 || nextCol > 3 || this.board[nextRow][nextCol].value !== 0) {
                                 break;
                             }
-                            this.board[nextRow][nextCol] = Object.assign({}, this.board[newRow][newCol]);
-                            this.board[newRow][newCol] = { value: 0, isNew: false };
+                            // Swap the tiles
+                            [this.board[newRow][newCol], this.board[nextRow][nextCol]] = [this.board[nextRow][nextCol], this.board[newRow][newCol]];
                             newRow = nextRow;
                             newCol = nextCol;
                         }
+                        // Check if the tile can be merged with the next tile
                         const mergeRow = newRow + (isVertical ? (isReverse ? 1 : -1) : 0);
                         const mergeCol = newCol + (isVertical ? 0 : (isReverse ? 1 : -1));
                         if (mergeRow >= 0 && mergeRow < 4 && mergeCol >= 0 && mergeCol < 4 &&
                             this.board[mergeRow][mergeCol].value === this.board[newRow][newCol].value && !merged[mergeRow || mergeCol]) {
+                            // Merge the tiles and update the score
                             this.board[mergeRow][mergeCol].value *= 2;
                             this.board[mergeRow][mergeCol].isNew = true;
-                            this.board[newRow][newCol] = { value: 0, isNew: false };
+                            this.board[newRow][newCol].value = 0; // Clear the value
                             merged[mergeRow || mergeCol] = true;
                             this.updateScore(this.board[mergeRow][mergeCol].value);
                             this.displayRandomPrompt(); // Display a new prompt on merge
                         }
+                        // Check if the game has ended after the move
                         this.checkEndGameCondition();
                     }
                 }
@@ -1174,7 +1186,20 @@ class Game2048 {
      * @returns {number[][]} A 2D array representing the game board.
      */
     createBoard() {
-        return Array.from({ length: 4 }, () => Array.from({ length: 4 }, () => ({ value: 0, isNew: false })));
+        const gameBoard = document.getElementById('game-board');
+        if (gameBoard) {
+            // clear out the gameboard before we start
+            gameBoard.innerHTML = '';
+        }
+        return Array.from({ length: 4 }, (_, rowIndex) => Array.from({ length: 4 }, (_, colIndex) => {
+            const tileElement = document.createElement('div');
+            tileElement.className = 'tile';
+            tileElement.style.transform = `translate(${colIndex * 105}px, ${rowIndex * 105}px)`;
+            if (gameBoard) {
+                gameBoard.appendChild(tileElement);
+            }
+            return { value: 0, isNew: false, element: tileElement };
+        }));
     }
     /**
      * Adds a random tile (2 or 4) to an empty spot on the board.
@@ -1198,22 +1223,22 @@ class Game2048 {
      * Renders the game board on the UI.
      */
     render() {
-        const gameBoard = document.getElementById('game-board');
-        if (gameBoard) {
-            gameBoard.innerHTML = '';
-            for (let i = 0; i < 4; i++) {
-                for (let j = 0; j < 4; j++) {
-                    const tile = document.createElement('div');
-                    if (this.board[i][j].isNew) {
-                        tile.className = 'tile pulse';
-                        this.board[i][j].isNew = false;
-                    }
-                    else {
-                        tile.className = 'tile';
-                    }
-                    tile.textContent = this.board[i][j].value === 0 ? '' : `0x${this.board[i][j].value.toString(16).toUpperCase()}`;
-                    tile.style.transform = `translate(${j * 105}px, ${i * 105}px)`; // Position tile
-                    gameBoard.appendChild(tile);
+        const tileSize = 105; // Size of each tile including gap
+        for (let i = 0; i < 4; i++) {
+            for (let j = 0; j < 4; j++) {
+                const tile = this.board[i][j];
+                if (tile.element) {
+                    // Update the tile's text content
+                    tile.element.textContent = tile.value === 0 ? '' : `0x${tile.value.toString(16).toUpperCase()}`;
+                    // Calculate the correct position for the tile
+                    const x = j * tileSize;
+                    const y = i * tileSize;
+                    // Apply the transformation to position the tile
+                    tile.element.style.transform = `translate(${x}px, ${y}px)`;
+                    // Update the tile's class for animation
+                    tile.element.className = tile.isNew ? 'tile pulse' : 'tile';
+                    // Reset the isNew flag after rendering
+                    tile.isNew = false;
                 }
             }
         }
