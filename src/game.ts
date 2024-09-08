@@ -188,8 +188,8 @@ class Game2048 {
      * Gets the current game board.
      * @returns {number[][]} The current game board.
      */
-    public getBoard(): Tile[][] {
-        return this.board;
+    public getBoard(): number[][] {
+        return this.board.map(row => row.map(tile => tile.value));
     }
 
     /**
