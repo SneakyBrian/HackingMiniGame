@@ -1,6 +1,7 @@
 export type Tile = {
     value: number;
     isNew: boolean;
+    isMerged: boolean; // Flag to indicate if the tile has merged
     element: HTMLDivElement | null; // Add a reference to the DOM element
 };
 
@@ -388,7 +389,8 @@ class Game2048 {
                             this.board[mergeRow][mergeCol].value === this.board[newRow][newCol].value && !merged[mergeRow || mergeCol]) {
                             // Merge the tiles and update the score
                             this.board[mergeRow][mergeCol].value *= 2;
-                            this.board[mergeRow][mergeCol].isNew = true;
+                            this.board[mergeRow][mergeCol].isNew = false;
+                            this.board[mergeRow][mergeCol].isMerged = true; // Set the merged flag
                             this.board[newRow][newCol].value = 0; // Clear the value
                             merged[mergeRow || mergeCol] = true;
                             this.updateScore(this.board[mergeRow][mergeCol].value);
@@ -479,7 +481,7 @@ class Game2048 {
                 if (gameBoard) {
                     gameBoard.appendChild(tileElement);
                 }
-                return { value: 0, isNew: false, element: tileElement };
+                return { value: 0, isNew: false, isMerged: false, element: tileElement };
             })
         );
     }
@@ -523,10 +525,23 @@ class Game2048 {
                     tile.element.style.transform = `translate(${x}px, ${y}px)`;
 
                     // Update the tile's class for animation
-                    tile.element.className = tile.isNew ? 'tile pulse' : 'tile';
+                    tile.element.className = 'tile';
+                    if (tile.isNew) {
+                        tile.element.classList.add('pulse');
+                        tile.isNew = false; // Reset the isNew flag after rendering
+                    }
+                    if (tile.isMerged) {
+                        tile.element.classList.add('merged');
+                        tile.isMerged = false; // Reset the flag after rendering
+                    }
 
-                    // Reset the isNew flag after rendering
-                    tile.isNew = false;
+                    // Listen for animation end to remove the "merged" class
+                    tile.element.addEventListener('animationend', () => {
+                        if (tile.element) {
+                            tile.element.classList.remove('pulse');
+                            tile.element.classList.remove('merged');
+                        }
+                    });
                 }
             }
         }
