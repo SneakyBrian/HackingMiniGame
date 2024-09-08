@@ -467,6 +467,10 @@ class Game2048 {
      */
     private createBoard(): Tile[][] {
         const gameBoard = document.getElementById('game-board');
+        if (gameBoard) {
+            // clear out the gameboard before we start
+            gameBoard.innerHTML = '';
+        }
         return Array.from({ length: 4 }, (_, rowIndex) =>
             Array.from({ length: 4 }, (_, colIndex) => {
                 const tileElement = document.createElement('div');
