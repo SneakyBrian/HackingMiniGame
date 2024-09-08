@@ -349,32 +349,44 @@ class Game2048 {
      */
     private move(direction: string): void {
         if (this.active) {
+            // Determine if the move is vertical or horizontal
             const isVertical = direction === 'up' || direction === 'down';
+            // Determine if the move is in reverse order (down or right)
             const isReverse = direction === 'down' || direction === 'right';
 
+            // Iterate over each row or column based on the direction
             for (let i = 0; i < 4; i++) {
+                // Track which tiles have been merged to prevent double merging
                 let merged = [false, false, false, false];
+                // Set the starting point and direction of iteration
                 for (let j = isReverse ? 2 : 1; isReverse ? j >= 0 : j < 4; isReverse ? j-- : j++) {
+                    // Determine the current row and column based on the direction
                     const row = isVertical ? j : i;
                     const col = isVertical ? i : j;
+                    // Check if the current tile is not empty
                     if (this.board[row][col].value !== 0) {
                         let newRow = row;
                         let newCol = col;
+                        // Move the tile as far as possible in the specified direction
                         while (true) {
                             const nextRow = newRow + (isVertical ? (isReverse ? 1 : -1) : 0);
                             const nextCol = newCol + (isVertical ? 0 : (isReverse ? 1 : -1));
+                            // Stop if the next position is out of bounds or not empty
                             if (nextRow < 0 || nextRow > 3 || nextCol < 0 || nextCol > 3 || this.board[nextRow][nextCol].value !== 0) {
                                 break;
                             }
+                            // Move the tile to the next position
                             this.board[nextRow][nextCol] = { ...this.board[newRow][newCol] };
                             this.board[newRow][newCol] = { value: 0, isNew: false, element: null };
                             newRow = nextRow;
                             newCol = nextCol;
                         }
+                        // Check if the tile can be merged with the next tile
                         const mergeRow = newRow + (isVertical ? (isReverse ? 1 : -1) : 0);
                         const mergeCol = newCol + (isVertical ? 0 : (isReverse ? 1 : -1));
                         if (mergeRow >= 0 && mergeRow < 4 && mergeCol >= 0 && mergeCol < 4 && 
                             this.board[mergeRow][mergeCol].value === this.board[newRow][newCol].value && !merged[mergeRow || mergeCol]) {
+                            // Merge the tiles and update the score
                             this.board[mergeRow][mergeCol].value *= 2;
                             this.board[mergeRow][mergeCol].isNew = true;
                             this.board[newRow][newCol] = { value: 0, isNew: false, element: null };
@@ -382,6 +394,7 @@ class Game2048 {
                             this.updateScore(this.board[mergeRow][mergeCol].value);
                             this.displayRandomPrompt(); // Display a new prompt on merge
                         }
+                        // Check if the game has ended after the move
                         this.checkEndGameCondition();
                     }
                 }
