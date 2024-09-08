@@ -1,7 +1,7 @@
 import Game2048, { Tile } from "../src/game"
 
 function createTileBoard(board: number[][]): Tile[][] {
-    return board.map(row => row.map(value => ({ value, isNew: false })));
+    return board.map(row => row.map(value => ({ value, isNew: false, element: null })));
 }
 
 function createNumberBoard(board: Tile[][]): number[][] {
