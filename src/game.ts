@@ -1,6 +1,7 @@
 export type Tile = {
     value: number;
     isNew: boolean;
+    element: HTMLDivElement | null; // Add a reference to the DOM element
 };
 
 import './game.css';
@@ -452,8 +453,17 @@ class Game2048 {
      * @returns {number[][]} A 2D array representing the game board.
      */
     private createBoard(): Tile[][] {
-        return Array.from({ length: 4 }, () => 
-            Array.from({ length: 4 }, () => ({ value: 0, isNew: false }))
+        const gameBoard = document.getElementById('game-board');
+        return Array.from({ length: 4 }, (_, rowIndex) =>
+            Array.from({ length: 4 }, (_, colIndex) => {
+                const tileElement = document.createElement('div');
+                tileElement.className = 'tile';
+                tileElement.style.transform = `translate(${colIndex * 105}px, ${rowIndex * 105}px)`;
+                if (gameBoard) {
+                    gameBoard.appendChild(tileElement);
+                }
+                return { value: 0, isNew: false, element: tileElement };
+            })
         );
     }
 
@@ -480,21 +490,14 @@ class Game2048 {
      * Renders the game board on the UI.
      */
     private render(): void {
-        const gameBoard = document.getElementById('game-board');
-        if (gameBoard) {
-            gameBoard.innerHTML = '';
-            for (let i = 0; i < 4; i++) {
-                for (let j = 0; j < 4; j++) {
-                    const tile = document.createElement('div');
-                    if (this.board[i][j].isNew) {
-                        tile.className = 'tile pulse';
-                        this.board[i][j].isNew = false;
-                    } else {
-                        tile.className = 'tile';
-                    }
-                    tile.textContent = this.board[i][j].value === 0 ? '' : `0x${this.board[i][j].value.toString(16).toUpperCase()}`;
-                    tile.style.transform = `translate(${j * 105}px, ${i * 105}px)`; // Position tile
-                    gameBoard.appendChild(tile);
+        for (let i = 0; i < 4; i++) {
+            for (let j = 0; j < 4; j++) {
+                const tile = this.board[i][j];
+                if (tile.element) {
+                    tile.element.textContent = tile.value === 0 ? '' : `0x${tile.value.toString(16).toUpperCase()}`;
+                    tile.element.style.transform = `translate(${j * 105}px, ${i * 105}px)`;
+                    tile.element.className = tile.isNew ? 'tile pulse' : 'tile';
+                    tile.isNew = false; // Reset the isNew flag after rendering
                 }
             }
         }
