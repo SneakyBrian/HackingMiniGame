@@ -21,9 +21,17 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, `body {
-    background-color: #000; /* Dark background */
-    color: #00FF00; /* Bright green text */
+___CSS_LOADER_EXPORT___.push([module.id, `:root {
+    --primary-color: #00FF00; /* Bright green used for text, borders, and progress bars */
+    --prompt-color: #666; /* Grey used specifically for prompt text */
+    --warning-color: #FF0000; /* Red used as warning colour */
+    --background-color: #000; /* Black background */
+    --overlay-background: rgba(0, 0, 0, 0.7); /* Semi-transparent black */
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--primary-color);
     font-family: 'Courier New', Courier, monospace; /* Monospaced font */
     text-align: center;
     position: relative; /* Allow absolute positioning of tiles */
@@ -58,8 +66,8 @@ ___CSS_LOADER_EXPORT___.push([module.id, `body {
     width: 100%;
     /* max-height: 100px; */
     overflow: hidden;
-    background-color: rgba(0, 0, 0, 0.7); /* Dark background with transparency */
-    color: #666; /* grey text for better readability */
+    background-color: var(--overlay-background);
+    color: var(--prompt-color);
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -75,7 +83,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `body {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    color: #666; /* Subtle text color */
+    color: var(--prompt-color);
     font-family: 'Courier New', monospace;
     font-size: 14px;
     line-height: 1.5;
@@ -85,11 +93,11 @@ ___CSS_LOADER_EXPORT___.push([module.id, `body {
 }
 
 #deadlock-progress::-webkit-progress-value {
-    background-color: red; /* For WebKit browsers */
+    background-color: var(--warning-color); /* For WebKit browsers */
 }
 
 #deadlock-progress::-moz-progress-bar {
-    background-color: red; /* For Firefox */
+    background-color: var(--warning-color); /* For Firefox */
 }
 
 #deadlock-progress {
@@ -129,12 +137,12 @@ ___CSS_LOADER_EXPORT___.push([module.id, `body {
 }
 
 ::-webkit-progress-value {
-    background-color: #00FF00;
+    background-color: var(--primary-color);
     transition: width 0.5s ease-in-out; /* Smooth transition for progress bar */
 }
 
 ::-moz-progress-bar {
-    background-color: #00FF00;
+    background-color: var(--primary-color);
     transition: width 0.5s ease-in-out; /* Smooth transition for progress bar */
 }
 
@@ -147,18 +155,18 @@ progress,
 }
 
 progress::-webkit-progress-bar {
-    background-color: #000;
-    border: 1px solid #00FF00;
+    background-color: var(--background-color);
+    border: 1px solid var(--primary-color);
 }
 
 #timer-progress::-webkit-progress-value {
-    background-color: var(--progress-color, #00FF00); /* Use CSS variable */
+    background-color: var(--progress-color, var(--primary-color)); /* Use CSS variable */
     transition: background-color 0.5s ease-in-out; /* Smooth transition */
     transition: width 0.5s ease-in-out; /* Smooth transition for progress bar */
 }
 
 #timer-progress::-moz-progress-bar {
-    background-color: var(--progress-color, #00FF00); /* Use CSS variable */
+    background-color: var(--progress-color, var(--primary-color)); /* Use CSS variable */
     transition: background-color 0.5s ease-in-out; /* Smooth transition */
     transition: width 0.5s ease-in-out; /* Smooth transition for progress bar */
 }
@@ -176,17 +184,17 @@ progress::-webkit-progress-bar {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: var(--overlay-background);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
 }
 .overlay-content {
-    background-color: #000; /* Match background color */
-    color: #00FF00; /* Bright green text */
+    background-color: var(--background-color); /* Match background color */
+    color: var(--primary-color);
     padding: 20px;
-    border: 1px solid #00FF00; /* Green border */
+    border: 1px solid var(--primary-color); /* Green border */
     text-align: center;
     font-family: 'Courier New', Courier, monospace; /* Monospaced font */
 }
@@ -210,13 +218,13 @@ progress::-webkit-progress-bar {
 .tile {
     width: 100px;
     height: 100px;
-    background-color: rgba(0, 0, 0, 0.7);
-    color: #00FF00; /* Bright green text */
+    background-color: var(--overlay-background);
+    color: var(--primary-color);
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 24px;
-    border: 1px solid #00FF00; /* Green border */
+    border: 1px solid var(--primary-color); /* Green border */
     transition: transform 0.2s ease-in-out; /* Add transition for sliding */
     position: absolute; /* Position tiles absolutely */
 }
@@ -231,7 +239,8 @@ progress::-webkit-progress-bar {
 
 h1, #score, #timer, #target-score {
     margin: 10px 0;
-}`, "",{"version":3,"sources":["webpack://./src/game.css"],"names":[],"mappings":"AAAA;IACI,sBAAsB,EAAE,oBAAoB;IAC5C,cAAc,EAAE,sBAAsB;IACtC,8CAA8C,EAAE,oBAAoB;IACpE,kBAAkB;IAClB,kBAAkB,EAAE,wCAAwC;IAC5D,aAAa;IACb,sBAAsB;IACtB,uBAAuB;IACvB,mBAAmB;IACnB,aAAa;IACb,YAAY;IACZ,gBAAgB;IAChB,SAAS;IACT,UAAU;IACV,aAAa,EAAE,gDAAgD;IAC/D,sBAAsB,EAAE,4DAA4D;IACpF,kBAAkB;IAClB,gBAAgB;AACpB;;AAEA;IACI,OAAO,QAAQ,EAAE;IACjB,KAAK,WAAW,EAAE;AACtB;;AAEA;IACI,MAAM,yBAAyB,EAAE;AACrC;;AAEA;IACI,eAAe;IACf,SAAS;IACT,OAAO;IACP,WAAW;IACX,uBAAuB;IACvB,gBAAgB;IAChB,oCAAoC,EAAE,sCAAsC;IAC5E,WAAW,EAAE,qCAAqC;IAClD,aAAa;IACb,sBAAsB;IACtB,yBAAyB;IACzB,aAAa;IACb,sBAAsB;IACtB,oBAAoB,EAAE,+BAA+B;IACrD,gBAAgB;AACpB;;AAEA;IACI,SAAS;IACT,UAAU;IACV,mBAAmB;IACnB,gBAAgB;IAChB,uBAAuB;IACvB,WAAW,EAAE,sBAAsB;IACnC,qCAAqC;IACrC,eAAe;IACf,gBAAgB;IAChB,qCAAqC,EAAE,kBAAkB;IACzD,cAAc,EAAE,wBAAwB;IACxC,iFAAiF;AACrF;;AAEA;IACI,qBAAqB,EAAE,wBAAwB;AACnD;;AAEA;IACI,qBAAqB,EAAE,gBAAgB;AAC3C;;AAEA;IACI,gBAAgB,EAAE,2BAA2B;AACjD;;AAEA;IACI,aAAa;IACb,mBAAmB;IACnB,WAAW,EAAE,kCAAkC;IAC/C,cAAc;AAClB;;AAEA;IACI,kBAAkB;IAClB,YAAY,EAAE,2BAA2B;IACzC,iBAAiB;AACrB;;AAEA;IACI,YAAY,EAAE,mDAAmD;IACjE,YAAY;IACZ,gBAAgB;AACpB;;AAEA;IACI,aAAa;IACb,mBAAmB;IACnB,uBAAuB;IACvB,aAAa;AACjB;;AAEA;IACI,kBAAkB;IAClB,YAAY;IACZ,iBAAiB;AACrB;;AAEA;IACI,yBAAyB;IACzB,kCAAkC,EAAE,uCAAuC;AAC/E;;AAEA;IACI,yBAAyB;IACzB,kCAAkC,EAAE,uCAAuC;AAC/E;;AAEA;;IAEI,UAAU;IACV,YAAY;IACZ,cAAc;IACd,gBAAgB;AACpB;;AAEA;IACI,sBAAsB;IACtB,yBAAyB;AAC7B;;AAEA;IACI,gDAAgD,EAAE,qBAAqB;IACvE,6CAA6C,EAAE,sBAAsB;IACrE,kCAAkC,EAAE,uCAAuC;AAC/E;;AAEA;IACI,gDAAgD,EAAE,qBAAqB;IACvE,6CAA6C,EAAE,sBAAsB;IACrE,kCAAkC,EAAE,uCAAuC;AAC/E;;AAEA;IACI,aAAa;IACb,qCAAqC;IACrC,kCAAkC;IAClC,QAAQ;IACR,cAAc,EAAE,0BAA0B;AAC9C;AACA;IACI,eAAe;IACf,MAAM;IACN,OAAO;IACP,WAAW;IACX,YAAY;IACZ,oCAAoC;IACpC,aAAa;IACb,uBAAuB;IACvB,mBAAmB;IACnB,aAAa;AACjB;AACA;IACI,sBAAsB,EAAE,2BAA2B;IACnD,cAAc,EAAE,sBAAsB;IACtC,aAAa;IACb,yBAAyB,EAAE,iBAAiB;IAC5C,kBAAkB;IAClB,8CAA8C,EAAE,oBAAoB;AACxE;;AAEA;IACI;QACI,eAAe;IACnB;IACA;QACI,eAAe;IACnB;IACA;QACI,eAAe;IACnB;AACJ;;AAEA;IACI,iCAAiC;AACrC;;AAEA;IACI,YAAY;IACZ,aAAa;IACb,oCAAoC;IACpC,cAAc,EAAE,sBAAsB;IACtC,aAAa;IACb,uBAAuB;IACvB,mBAAmB;IACnB,eAAe;IACf,yBAAyB,EAAE,iBAAiB;IAC5C,sCAAsC,EAAE,+BAA+B;IACvE,kBAAkB,EAAE,8BAA8B;AACtD;;AAEA;IACI,aAAa;IACb,uCAAuC;IACvC,oCAAoC;IACpC,QAAQ;IACR,iBAAiB;AACrB;;AAEA;IACI,cAAc;AAClB","sourcesContent":["body {\n    background-color: #000; /* Dark background */\n    color: #00FF00; /* Bright green text */\n    font-family: 'Courier New', Courier, monospace; /* Monospaced font */\n    text-align: center;\n    position: relative; /* Allow absolute positioning of tiles */\n    display: flex;\n    flex-direction: column;\n    justify-content: center;\n    align-items: center;\n    height: 100vh;\n    width: 100vw;\n    overflow: hidden;\n    margin: 0;\n    padding: 0;\n    padding: 10px; /* Add padding to create space around the game */\n    box-sizing: border-box; /* Include padding in the element's total width and height */\n    touch-action: none;\n    overflow: hidden;\n}\n\n@keyframes typing {\n    from { width: 0; }\n    to { width: 100%; }\n}\n\n@keyframes blink {\n    50% { border-color: transparent; }\n}\n\n#prompt-container {\n    position: fixed;\n    bottom: 0;\n    left: 0;\n    width: 100%;\n    /* max-height: 100px; */\n    overflow: hidden;\n    background-color: rgba(0, 0, 0, 0.7); /* Dark background with transparency */\n    color: #666; /* grey text for better readability */\n    display: flex;\n    flex-direction: column;\n    justify-content: flex-end;\n    padding: 10px;\n    box-sizing: border-box;\n    pointer-events: none; /* Ensure clicks pass through */\n    text-align: left;\n}\n\n.prompt {\n    margin: 0;\n    padding: 0;\n    white-space: nowrap;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    color: #666; /* Subtle text color */\n    font-family: 'Courier New', monospace;\n    font-size: 14px;\n    line-height: 1.5;\n    /* border-right: 2px solid #cccccc; */ /* Cursor effect */\n    /* width: 0; */ /* Start with no width */\n    /* animation: typing 2s steps(30, end), blink 0.5s step-end infinite alternate; */\n}\n\n#deadlock-progress::-webkit-progress-value {\n    background-color: red; /* For WebKit browsers */\n}\n\n#deadlock-progress::-moz-progress-bar {\n    background-color: red; /* For Firefox */\n}\n\n#deadlock-progress {\n    appearance: none; /* Remove default styling */\n}\n\n.progress-container {\n    display: flex;\n    align-items: center;\n    width: 100%; /* Make the container full width */\n    margin: 10px 0;\n}\n\n.progress-container label {\n    margin-right: 10px;\n    width: 150px; /* Fixed width for labels */\n    text-align: right;\n}\n\n.progress-container progress {\n    flex-grow: 1; /* Allow progress bars to take up remaining space */\n    height: 20px;\n    appearance: none;\n}\n\n.progress-container {\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    margin: 2px 0;\n}\n\n.progress-container label {\n    margin-right: 10px;\n    width: 150px;\n    text-align: right;\n}\n\n::-webkit-progress-value {\n    background-color: #00FF00;\n    transition: width 0.5s ease-in-out; /* Smooth transition for progress bar */\n}\n\n::-moz-progress-bar {\n    background-color: #00FF00;\n    transition: width 0.5s ease-in-out; /* Smooth transition for progress bar */\n}\n\nprogress,\n#timer-progress {\n    width: 80%;\n    height: 20px;\n    margin: 10px 0;\n    appearance: none;\n}\n\nprogress::-webkit-progress-bar {\n    background-color: #000;\n    border: 1px solid #00FF00;\n}\n\n#timer-progress::-webkit-progress-value {\n    background-color: var(--progress-color, #00FF00); /* Use CSS variable */\n    transition: background-color 0.5s ease-in-out; /* Smooth transition */\n    transition: width 0.5s ease-in-out; /* Smooth transition for progress bar */\n}\n\n#timer-progress::-moz-progress-bar {\n    background-color: var(--progress-color, #00FF00); /* Use CSS variable */\n    transition: background-color 0.5s ease-in-out; /* Smooth transition */\n    transition: width 0.5s ease-in-out; /* Smooth transition for progress bar */\n}\n\n#game-board {\n    display: grid;\n    grid-template-columns: repeat(4, 1fr);\n    grid-template-rows: repeat(4, 1fr);\n    gap: 5px;\n    margin: 0 auto; /* Center align the grid */\n}\n.overlay {\n    position: fixed;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background-color: rgba(0, 0, 0, 0.7);\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    z-index: 1000;\n}\n.overlay-content {\n    background-color: #000; /* Match background color */\n    color: #00FF00; /* Bright green text */\n    padding: 20px;\n    border: 1px solid #00FF00; /* Green border */\n    text-align: center;\n    font-family: 'Courier New', Courier, monospace; /* Monospaced font */\n}\n\n@keyframes pulse {\n    0% {\n        font-size: 24px;\n    }\n    50% {\n        font-size: 32px;\n    }\n    100% {\n        font-size: 24px;\n    }\n}\n\n.pulse {\n    animation: pulse 0.3s ease-in-out;\n}\n\n.tile {\n    width: 100px;\n    height: 100px;\n    background-color: rgba(0, 0, 0, 0.7);\n    color: #00FF00; /* Bright green text */\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    font-size: 24px;\n    border: 1px solid #00FF00; /* Green border */\n    transition: transform 0.2s ease-in-out; /* Add transition for sliding */\n    position: absolute; /* Position tiles absolutely */\n}\n\n#game-board {\n    display: grid;\n    grid-template-columns: repeat(4, 100px);\n    grid-template-rows: repeat(4, 100px);\n    gap: 5px;\n    margin: 20px auto;\n}\n\nh1, #score, #timer, #target-score {\n    margin: 10px 0;\n}"],"sourceRoot":""}]);
+}
+`, "",{"version":3,"sources":["webpack://./src/game.css"],"names":[],"mappings":"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","sourcesContent":[":root {\n    --primary-color: #00FF00; /* Bright green used for text, borders, and progress bars */\n    --prompt-color: #666; /* Grey used specifically for prompt text */\n    --warning-color: #FF0000; /* Red used as warning colour */\n    --background-color: #000; /* Black background */\n    --overlay-background: rgba(0, 0, 0, 0.7); /* Semi-transparent black */\n}\n\nbody {\n    background-color: var(--background-color);\n    color: var(--primary-color);\n    font-family: 'Courier New', Courier, monospace; /* Monospaced font */\n    text-align: center;\n    position: relative; /* Allow absolute positioning of tiles */\n    display: flex;\n    flex-direction: column;\n    justify-content: center;\n    align-items: center;\n    height: 100vh;\n    width: 100vw;\n    overflow: hidden;\n    margin: 0;\n    padding: 0;\n    padding: 10px; /* Add padding to create space around the game */\n    box-sizing: border-box; /* Include padding in the element's total width and height */\n    touch-action: none;\n    overflow: hidden;\n}\n\n@keyframes typing {\n    from { width: 0; }\n    to { width: 100%; }\n}\n\n@keyframes blink {\n    50% { border-color: transparent; }\n}\n\n#prompt-container {\n    position: fixed;\n    bottom: 0;\n    left: 0;\n    width: 100%;\n    /* max-height: 100px; */\n    overflow: hidden;\n    background-color: var(--overlay-background);\n    color: var(--prompt-color);\n    display: flex;\n    flex-direction: column;\n    justify-content: flex-end;\n    padding: 10px;\n    box-sizing: border-box;\n    pointer-events: none; /* Ensure clicks pass through */\n    text-align: left;\n}\n\n.prompt {\n    margin: 0;\n    padding: 0;\n    white-space: nowrap;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    color: var(--prompt-color);\n    font-family: 'Courier New', monospace;\n    font-size: 14px;\n    line-height: 1.5;\n    /* border-right: 2px solid #cccccc; */ /* Cursor effect */\n    /* width: 0; */ /* Start with no width */\n    /* animation: typing 2s steps(30, end), blink 0.5s step-end infinite alternate; */\n}\n\n#deadlock-progress::-webkit-progress-value {\n    background-color: var(--warning-color); /* For WebKit browsers */\n}\n\n#deadlock-progress::-moz-progress-bar {\n    background-color: var(--warning-color); /* For Firefox */\n}\n\n#deadlock-progress {\n    appearance: none; /* Remove default styling */\n}\n\n.progress-container {\n    display: flex;\n    align-items: center;\n    width: 100%; /* Make the container full width */\n    margin: 10px 0;\n}\n\n.progress-container label {\n    margin-right: 10px;\n    width: 150px; /* Fixed width for labels */\n    text-align: right;\n}\n\n.progress-container progress {\n    flex-grow: 1; /* Allow progress bars to take up remaining space */\n    height: 20px;\n    appearance: none;\n}\n\n.progress-container {\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    margin: 2px 0;\n}\n\n.progress-container label {\n    margin-right: 10px;\n    width: 150px;\n    text-align: right;\n}\n\n::-webkit-progress-value {\n    background-color: var(--primary-color);\n    transition: width 0.5s ease-in-out; /* Smooth transition for progress bar */\n}\n\n::-moz-progress-bar {\n    background-color: var(--primary-color);\n    transition: width 0.5s ease-in-out; /* Smooth transition for progress bar */\n}\n\nprogress,\n#timer-progress {\n    width: 80%;\n    height: 20px;\n    margin: 10px 0;\n    appearance: none;\n}\n\nprogress::-webkit-progress-bar {\n    background-color: var(--background-color);\n    border: 1px solid var(--primary-color);\n}\n\n#timer-progress::-webkit-progress-value {\n    background-color: var(--progress-color, var(--primary-color)); /* Use CSS variable */\n    transition: background-color 0.5s ease-in-out; /* Smooth transition */\n    transition: width 0.5s ease-in-out; /* Smooth transition for progress bar */\n}\n\n#timer-progress::-moz-progress-bar {\n    background-color: var(--progress-color, var(--primary-color)); /* Use CSS variable */\n    transition: background-color 0.5s ease-in-out; /* Smooth transition */\n    transition: width 0.5s ease-in-out; /* Smooth transition for progress bar */\n}\n\n#game-board {\n    display: grid;\n    grid-template-columns: repeat(4, 1fr);\n    grid-template-rows: repeat(4, 1fr);\n    gap: 5px;\n    margin: 0 auto; /* Center align the grid */\n}\n.overlay {\n    position: fixed;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background-color: var(--overlay-background);\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    z-index: 1000;\n}\n.overlay-content {\n    background-color: var(--background-color); /* Match background color */\n    color: var(--primary-color);\n    padding: 20px;\n    border: 1px solid var(--primary-color); /* Green border */\n    text-align: center;\n    font-family: 'Courier New', Courier, monospace; /* Monospaced font */\n}\n\n@keyframes pulse {\n    0% {\n        font-size: 24px;\n    }\n    50% {\n        font-size: 32px;\n    }\n    100% {\n        font-size: 24px;\n    }\n}\n\n.pulse {\n    animation: pulse 0.3s ease-in-out;\n}\n\n.tile {\n    width: 100px;\n    height: 100px;\n    background-color: var(--overlay-background);\n    color: var(--primary-color);\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    font-size: 24px;\n    border: 1px solid var(--primary-color); /* Green border */\n    transition: transform 0.2s ease-in-out; /* Add transition for sliding */\n    position: absolute; /* Position tiles absolutely */\n}\n\n#game-board {\n    display: grid;\n    grid-template-columns: repeat(4, 100px);\n    grid-template-rows: repeat(4, 100px);\n    gap: 5px;\n    margin: 20px auto;\n}\n\nh1, #score, #timer, #target-score {\n    margin: 10px 0;\n}\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
