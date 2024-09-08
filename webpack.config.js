@@ -50,6 +50,7 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: './src/index.html',
             title: `Hacking Mini Game - ${version}`,
+            inject: true,
         }),
     ],
 };
