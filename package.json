@@ -4,8 +4,8 @@
   "description": "A simple 2048 game in TypeScript",
   "main": "server.js",
   "scripts": {
-    "start": "NODE_ENV=development webpack serve --open",
-    "build": "NODE_ENV=production webpack && copyfiles -u 1 src/index.html dist/",
+    "start": "cross-env NODE_ENV=development webpack serve --open",
+    "build": "cross-env NODE_ENV=production webpack && copyfiles -u 1 src/index.html dist/",
     "test": "jest"
   },
   "devDependencies": {
