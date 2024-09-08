@@ -38,7 +38,7 @@ describe('Game2048', () => {
             [0, 0, 0, 0],
             [0, 0, 0, 0],
             [0, 0, 0, 0],
-        ]));
+        ]);
     });
 
     test('should move tiles down correctly', () => {
