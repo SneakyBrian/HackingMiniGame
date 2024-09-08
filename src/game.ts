@@ -377,7 +377,7 @@ class Game2048 {
                             }
                             // Move the tile to the next position
                             this.board[nextRow][nextCol] = { ...this.board[newRow][newCol] };
-                            this.board[newRow][newCol] = { value: 0, isNew: false, element: null };
+                            this.board[newRow][newCol].value = 0; // Clear the value but retain the element
                             newRow = nextRow;
                             newCol = nextCol;
                         }
@@ -389,7 +389,7 @@ class Game2048 {
                             // Merge the tiles and update the score
                             this.board[mergeRow][mergeCol].value *= 2;
                             this.board[mergeRow][mergeCol].isNew = true;
-                            this.board[newRow][newCol] = { value: 0, isNew: false, element: null };
+                            this.board[newRow][newCol].value = 0; // Clear the value but retain the element
                             merged[mergeRow || mergeCol] = true;
                             this.updateScore(this.board[mergeRow][mergeCol].value);
                             this.displayRandomPrompt(); // Display a new prompt on merge
