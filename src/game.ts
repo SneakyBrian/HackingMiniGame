@@ -435,10 +435,10 @@ class Game2048 {
         // Check for possible merges
         for (let i = 0; i < 4; i++) {
             for (let j = 0; j < 4; j++) {
-                if (i < 3 && this.board[i][j] === this.board[i + 1][j]) {
+                if (i < 3 && this.board[i][j].value === this.board[i + 1][j].value) {
                     return false; // Found a possible vertical merge
                 }
-                if (j < 3 && this.board[i][j] === this.board[i][j + 1]) {
+                if (j < 3 && this.board[i][j].value === this.board[i][j + 1].value) {
                     return false; // Found a possible horizontal merge
                 }
             }
