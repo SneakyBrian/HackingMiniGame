@@ -1,4 +1,4 @@
-import Game2048 from "../src/game"
+import Game2048, { Tile } from "../src/game"
 
 function createTileBoard(board: number[][]): Tile[][] {
     return board.map(row => row.map(value => ({ value, isNew: false })));
